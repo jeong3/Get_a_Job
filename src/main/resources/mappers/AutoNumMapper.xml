@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Get_a_Job.mapper.AutoNumMapper">
+	<select id="AutoNumSelect">
+		select
+		concat(#{sep}, nvl(max(substr(${col}, #{len})), 100000) + 1)
+		from ${table}
+	</select>
+</mapper>

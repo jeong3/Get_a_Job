@@ -5,15 +5,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, 그리고 Bootstrap 기여자들">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.145.0">
-    <title>모의 면접 시뮬레이터</title>
+    <title>Checkout example · Bootstrap v5.3</title>
 
-    <link rel="canonical" href="https://getbootstrap.kr/docs/5.3/examples/pricing/">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/checkout/">
 
-    
-<script src="/static/js/color-modes.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <script src="/static/js/color-modes.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+
     <link rel="apple-touch-icon" href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
 <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
@@ -108,9 +109,9 @@
     </style>
 
     <!-- Custom styles for this template -->
-    <link href="pricing.css" rel="stylesheet">
+    <link href="checkout.css" rel="stylesheet">
   </head>
-  <body>
+  <body class="bg-body-tertiary">
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
   <symbol id="check2" viewBox="0 0 16 16">
     <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -143,21 +144,21 @@
   <li>
     <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
       <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#sun-fill"></use></svg>
-      밝게
+      Light
       <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
     </button>
   </li>
   <li>
     <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
       <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#moon-stars-fill"></use></svg>
-      어둡게
+      Dark
       <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
     </button>
   </li>
   <li>
     <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
       <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#circle-half"></use></svg>
-      시스템
+      Auto
       <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
     </button>
   </li>
@@ -166,112 +167,83 @@
     </div>
 
     
-<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-  <symbol id="check" viewBox="0 0 16 16">
-    <title>Check</title>
-    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-  </symbol>
-</svg>
-
-<div class="container py-3">
-  <header>
-    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
-      <a href="/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img"><title>Bootstrap</title><path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z" fill="currentColor"></path></svg>
-        <span class="fs-4">Pricing example</span>
-      </a>
-
-      <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/memberList">memberList</a>
-        
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/emp/empList">empList</a>
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">Support</a>
-        <a class="py-2 link-body-emphasis text-decoration-none" href="#">Pricing</a>
-      </nav>
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+      <h1 class="h2">Employee Regist</h1>
     </div>
 
-  </header>
+    <div class="row g-5">
+      <div class="col-md-7 col-lg-12">
+        <form class="needs-validation" method="post" action="/emp/empRegist">
+          <div class="row g-3">
+            <div class="col-sm-12">
+              <label for="firstName" class="form-label">직원번호</label>
+              <input type="text" class="form-control" readonly="readonly" placeholder="" th:value="${autoNum}" required>
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+            
+            <div class="col-sm-12">
+              <label for="firstName" class="form-label">이름</label>
+              <input type="text" class="form-control" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+			
+			<div class="col-sm-12">
+              <label for="firstName" class="form-label">아이디</label>
+              <input type="text" class="form-control" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+            
+            <div class="col-sm-12">
+              <label for="firstName" class="form-label">비밀번호</label>
+              <input type="text" class="form-control" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+            
+            <div class="col-sm-12">
+              <label for="firstName" class="form-label">비밀번호확인</label>
+              <input type="text" class="form-control" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
 
-  <main>
-  	<a href="/emp/empRegist">직원등록</a>
-    <h2 class="display-6 text-center mb-4">직원 리스트</h2>
-	<br><br>
-    <div class="table-responsive">
-      <table class="table text-center">
-		 <thead>
-		   <tr>
-		     <th>직원번호</th>
-		     <th>직원아이디</th>
-		     <th>직원이름</th>
-		     <th>전화번호</th>
-		     <th>이메일</th>
-		     <th>가입일자</th>
-		   </tr>
-		 </thead>
-		 <tbody>
-		   <tr>
-		     <td>1</td>
-		     <td>employee01</td>
-		     <td>홍길동</td>
-		     <td>010-1234-5678</td>
-		     <td>hong@example.com</td>
-		     <td>2024-04-25</td>
-		   </tr>
-		   <tr>
-		     <td>2</td>
-		     <td>employee02</td>
-		     <td>김철수</td>
-		     <td>010-2345-6789</td>
-		     <td>kim@example.com</td>
-		     <td>2024-04-26</td>
-		   </tr>
-		   <!-- 여기에 추가 직원 데이터 계속 -->
-		  </tbody>
-	  </table>
+            <div class="col-12">
+              <label for="email" class="form-label">Email <span class="text-body-secondary">(Optional)</span></label>
+              <input type="email" class="form-control" placeholder="you@example.com">
+              <div class="invalid-feedback">
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
+          
+          <hr class="my-4">
+
+          <button class="w-100 btn btn-primary btn-lg" type="submit">회원가입</button>
+          </div>
+        </form>
+      </div>
     </div>
   </main>
 
-  <footer class="pt-4 my-md-5 pt-md-5 border-top">
-    <div class="row">
-      <div class="col-12 col-md">
-        <img class="mb-2" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="24" height="19">
-        <small class="d-block mb-3 text-body-secondary">&copy; 2017–2025</small>
-      </div>
-      <div class="col-6 col-md">
-        <h5>Features</h5>
-        <ul class="list-unstyled text-small">
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
-        </ul>
-      </div>
-      <div class="col-6 col-md">
-        <h5>Resources</h5>
-        <ul class="list-unstyled text-small">
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
-        </ul>
-      </div>
-      <div class="col-6 col-md">
-        <h5>About</h5>
-        <ul class="list-unstyled text-small">
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
-          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
-        </ul>
-      </div>
-    </div>
+  <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+    <p class="mb-1">&copy; 2017–2025 Company Name</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="#">Privacy</a></li>
+      <li class="list-inline-item"><a href="#">Terms</a></li>
+      <li class="list-inline-item"><a href="#">Support</a></li>
+    </ul>
   </footer>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-    </body>
+
+    <script defer src="checkout.js"></script></body>
 </html>
