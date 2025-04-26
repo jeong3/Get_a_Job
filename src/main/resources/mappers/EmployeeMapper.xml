@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Get_a_Job.mapper.EmployeeMapper">
+	<sql id="employeeBaseColumns">
+		EMP_NUM, EMP_ID, EMP_PW, EMP_NAME, EMP_PHONE, EMP_EMAIL, EMP_REGIST
+	</sql>
+	
+	<insert id="employeeInsert" parameterType="empDTO">
+		insert into employees(<include refid="employeeBaseColumns"/>)
+		values (#{empNum}, #{empId}, #{empPw}, #{empName}, #{empPhone}, #{empEmail}, sysdate)
+	</insert>
+	
+	<select id="employeeSelectAll" resultType="empDTO">
+		select <include refid="employeeBaseColumns" /> from employees
+	</select>
+	
+	<select id="employeeSelectOne" resultType="empDTO" parameterType="string">
+		select <include refid="employeeBaseColumns" /> from employees
+		where emp_num = #{empNum}
+	</select>
+	
+	<update id="employeeUdpate" parameterType="empDTO">
+		update employees set
+		EMP_ID = #{empId}
+		, EMP_NAME = #{empName}
+		, EMP_PHONE = #{empPhone}
+		, EMP_EMAIL = #{empEmail}
+		where EMP_NUM = #{empNum}
+	</update>
+	
+	<delete id="employeeDelete">
+		delete from employees
+		where emp_num = #{empNum}
+	</delete>
+</mapper>
