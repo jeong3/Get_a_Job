@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Get_a_Job.mapper.MemberMapper">
+<sql id="memberBaseColumns">member_Num, member_Name, member_Id, member_Pw, member_Regist, gender, member_email, member_phone, member_birth</sql>
+<insert id="memberInsert">
+	insert into members(member_Num, member_Name, member_Id, member_Pw, member_Regist, gender, member_email, member_phone, member_birth)
+	values (#{memberNum}, #{memberName}, #{memberId}, #{memberPw}, sysdate, #{gender}, #{memberEmail}, #{memberPhone}, #{memberBirth})
+</insert>
+
+<select id="memberSelectAll">
+	select <include refid="memberBaseColumns" /> from members
+
+</select>
+
+<select id="memberSelectOne">
+	select <include refid="memberBaseColumns" /> from members
+	where member_num = #{memberNum}
+</select>
+
+<update id="memberUpdate">
+	update members set
+	member_Name = #{memberName}
+	, member_Id = #{memberId}
+	, gender = #{gender}
+	, member_email = #{memberEmail}
+	, member_phone = #{memberPhone}
+	, member_birth = #{memberBirth}
+	where member_num = #{memberNum}
+</update>
+
+<delete id="memberDelete">
+	delete from members where member_num = #{memberNum}
+</delete>
+</mapper>
