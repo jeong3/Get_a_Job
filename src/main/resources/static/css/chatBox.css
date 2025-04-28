@@ -102,3 +102,35 @@ body {
 .chat-input-container button:hover {
     background-color: #45a049;
 }
+
+.user-message {
+    text-align: right;
+    background-color: #d1e7dd;
+    margin: 5px;
+    padding: 8px;
+    border-radius: 8px;
+    display: inline-block;
+    max-width: 70%;
+}
+
+.bot-message {
+    text-align: left;
+    background-color: #f8d7da;
+    margin: 5px;
+    padding: 8px;
+    border-radius: 8px;
+    display: inline-block;
+    max-width: 70%;
+}
+
+.system-message {
+    text-align: center;
+    background-color: #e2e3e5;
+    margin: 5px;
+    padding: 8px;
+    border-radius: 8px;
+    display: inline-block;
+    max-width: 70%;
+    font-style: italic;
+    color: #555;
+}

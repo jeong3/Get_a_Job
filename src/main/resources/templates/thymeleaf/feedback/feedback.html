@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>자소서/이력서 피드백 서비스</title>
+    <link rel="stylesheet" href="/static/css/chatBox.css">
 </head>
 <body>
+    <div id="chatBox" style="height:400px; overflow-y:scroll; border:1px solid #ccc; margin-bottom:10px; padding:10px;"></div>
 
+    <!-- 희망 직무 입력 폼 -->
+    <form id="jobTitleForm" style="margin-bottom: 10px;">
+        <input type="text" id="jobTitleInput" placeholder="희망 직무를 입력하세요" required />
+        <button type="submit">직무 설정</button>
+    </form>
+
+    <!-- 파일 업로드 폼 -->
+    <form id="fileForm" enctype="multipart/form-data">
+        <input type="file" id="fileInput" accept=".docx" required />
+        <button type="submit">파일 업로드</button>
+    </form>
+
+    <script src="/static/js/feedBackChatBox.js"></script>
 </body>
 </html>
