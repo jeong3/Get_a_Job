@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채팅방</title>
+    <link rel="stylesheet" href="/static/css/chatBox.css">
 </head>
 <body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h3>채팅방</h3>
+        </div>
+        <div class="chat-box" id="chat-box">
+            <div class="message bot-message">
+                <span class="message-text">안녕하세요! 무엇을 도와드릴까요?</span>
+                <span class="timestamp">10:00</span>
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <input type="text" id="message-input" placeholder="메시지를 입력하세요..." />
+            <button id="send-btn">보내기</button>
+        </div>
+    </div>
 
+    <script src="/static/js/chatBox.js"></script>
 </body>
 </html>
