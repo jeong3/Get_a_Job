@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Get_a_Job.mapper.InterviewMapper">
+
+<insert id="ChatRoomInsert">
+	insert into chat_room (CHAT_NUM,GPT_FEEDBACK,INTERVIEW_DATE,JOB_TITLE,USER_ID)
+	values(#{chatNum}, null, sysdate, #{jobTitle}, #{userId} )
+</insert>
+
+<insert id="InterviewInsert">
+	insert into interview (INTERVIEW_NUM, QUESTION,USER_ANSWER,CHAT_NUM)
+	values (#{interviewNum}, #{question}, #{userAnswer}, #{chatNum})
+</insert>
+
+</mapper>
+	

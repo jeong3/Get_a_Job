@@ -1,17 +1,36 @@
 let job_title = '';  // 직무를 저장할 변수
+let chatNum = '';
 const apiKey = '';
 
 window.onload = function() {
     // 페이지 로드 시 직무 입력을 받는 함수 실행
     job_title = prompt("직무를 입력해주세요 (예: 백엔드 개발자)");
+	
     if (job_title) {
-        // 직무가 입력되었을 때 메시지 초기화
+        SendingJob(job_title);
         startChatWithJob(job_title);
     } else {
         // 직무가 입력되지 않으면 기본 메시지 표시
         alert("직무를 입력하지 않았습니다.");
     }
 };
+function SendingJob(job_title){
+	$.ajax({
+	       url: "/interview/chatRoomCreate",  // API 요청 URL
+	       method: "post",  // HTTP 메서드 (POST)
+	       data: { "jobTitle" : job_title},
+	       success: function(response) {
+			chatNum = response;  // 서버에서 받은 chatNum을 전역 변수에 저장
+			console.log("chatNum: ", chatNum);
+
+	           
+	       },
+	       error: function(xhr, status, error) {
+	           console.error("Error:", error);
+	           alert("서버 오류");
+	       }
+	   });
+}
 
 function startChatWithJob(job_title) {
     const messages = [
@@ -44,36 +63,49 @@ document.getElementById('send-btn').addEventListener('click', function() {
 });
 
 async function sendToGPT(userInput) {
-    // 직무 정보가 포함된 메시지
     const messages = [
-        { 
-            role: "system", 
-            content: `너는 ${job_title} 직무의 전문 모의면접관이야. 사용자의 답변에 따라 추가 질문을 해줘.` 
+        {
+            role: "system",
+            content: `너는 ${job_title} 직무의 전문 모의면접관이야. 사용자의 답변에 따라 추가 질문을 해줘.`
         },
-        { 
-            role: "user", 
-            content: userInput 
+        {
+            role: "user",
+            content: userInput
         }
     ];
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer "+apiKey  // API 키를 여기에 넣으세요
-        },
-        body: JSON.stringify({
-            model: "gpt-3.5-turbo",  
-            messages: messages
-        })
-    });
+    try {
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + apiKey
+            },
+            body: JSON.stringify({
+                model: "gpt-3.5-turbo",
+                messages: messages
+            })
+        });
 
-    const data = await response.json();
-    const gptResponse = data.choices[0].message.content;
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error("API Error:", errorData);
+            alert("API 호출 중 오류가 발생했습니다.");
+            return;
+        }
 
-    // GPT의 응답을 화면에 출력
-    addMessage(gptResponse, 'bot');
+        const data = await response.json();
+        const gptResponse = data.choices[0].message.content;
+
+        addMessage(gptResponse, 'bot');
+        saveQuestionAnswer(userInput, gptResponse);
+    } catch (error) {
+        console.error("Fetch error:", error);
+        alert("API 호출 중 예외가 발생했습니다.");
+    }
 }
+
+
 
 function addMessage(text, sender) {
     let messageContainer = document.createElement('div');
@@ -98,4 +130,24 @@ function addMessage(text, sender) {
 
     document.getElementById('chat-box').appendChild(messageContainer);
     document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+}
+
+// 질문과 답변을 DB에 저장하는 함수
+function saveQuestionAnswer(question, userAnswer) {
+    $.ajax({
+        url: "/interview/saveQA",  // 서버로 데이터 전송
+        method: "POST",  // POST 메서드
+        data: {
+            chatNum: chatNum,      // 채팅방 번호
+            question: question,    // 질문 내용
+            userAnswer: userAnswer // 사용자의 답변
+        },
+        success: function() {
+            console.log("질문과 답변이 저장되었습니다.");
+        },
+        error: function(xhr, status, error) {
+            console.error("저장 중 오류 발생:", error);
+            alert("저장 실패");
+        }
+    });
 }
