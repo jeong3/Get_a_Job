@@ -3,25 +3,40 @@
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Get_a_Job.mapper.FeedbackMapper">
-	<insert id="insertFeedback" parameterType="feedbackDTO">
-		INSERT INTO feedback (
-            feedback_num,
-            user_id,
-            original_filename,
-            saved_filename,
-            file_path,
-            gpt_feedback,
-            feedback_date,
-            job_title
-        ) VALUES (
-            'FB' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || LPAD(feedback_seq.NEXTVAL, 4, '0'),
-            #{userId},
-            #{originalFileName},
-            #{savedFileName},
-            #{filePath},
-            #{gptFeedback},
-            SYSDATE,
-            #{jobTitle}
-        )
+	<insert id="insertFeedback" parameterType="FeedbackDTO">
+	    <selectKey keyProperty="feedbackNum" resultType="String" order="BEFORE">
+	        SELECT 'FB' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || LPAD(feedback_seq.NEXTVAL, 4, '0') FROM dual
+	    </selectKey>
+	    INSERT INTO feedback (
+	        feedback_num, user_id, original_filename, saved_filename, file_path,
+	        gpt_feedback, feedback_date, job_title
+	    ) VALUES (
+	        #{feedbackNum}, #{userId}, #{originalFileName}, #{savedFileName}, #{filePath},
+	        #{gptFeedback}, SYSDATE, #{jobTitle}
+	    )
 	</insert>
+	
+	<select id="selectFeedbackById" parameterType="long" resultType="feedbackDTO">
+	    SELECT *
+	    FROM feedback
+	    WHERE feedback_num = #{feedbackId}
+	</select>
+	
+	
+	<insert id="insertFeedbackQuestion" parameterType="feedbackQuestionDTO">
+	    INSERT INTO feedback_question (
+	        question_id,
+	        feedback_num,
+	        question,
+	        answer,
+	        created_at
+	    ) VALUES (
+	        feedback_question_seq.NEXTVAL,
+	        #{feedbackNum},
+	        #{question},
+	        #{answer},
+	        SYSDATE
+	    )
+	</insert>
+		
 </mapper>

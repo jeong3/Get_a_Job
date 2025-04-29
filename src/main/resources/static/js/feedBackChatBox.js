@@ -1,84 +1,127 @@
-// 희망 직무 저장
-function setJobTitle(jobTitle) {
+let lastFeedbackNum = null; // ⭐ 업로드할 때 받은 feedbackNum 저장
+
+// 직무 설정 폼 제출
+document.getElementById("jobTitleForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    
+    const jobTitle = document.getElementById("jobTitleInput").value;
+
     fetch('/feedback/setJobTitle', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({ 'jobTitle': jobTitle })
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ jobTitle: jobTitle })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('직무 저장 실패');
-        }
-        return response.text();
-    })
-    .then(data => {
-        addMessageToChatBox('system', '희망 직무가 저장되었습니다: ' + jobTitle);
+    .then(response => response.text())
+    .then(result => {
+        addMessageToChatBox("system", `희망 직무가 '${jobTitle}'로 설정되었습니다.`);
     })
     .catch(error => {
-        console.error(error);
-    });
-}
-
-// 파일 업로드 및 피드백 요청
-function uploadFileAndRequestFeedback(file) {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    fetch('/feedback/upload', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('파일 업로드 실패');
-        }
-        return response.json();
-    })
-    .then(data => {
-        addMessageToChatBox('bot', data.gptFeedback);
-    })
-    .catch(error => {
-        console.error(error);
-        addMessageToChatBox('system', '피드백 요청 실패');
-    });
-}
-
-// 채팅창에 메시지 추가
-function addMessageToChatBox(sender, message) {
-    const chatBox = document.getElementById('chatBox');
-    const messageElement = document.createElement('div');
-    messageElement.className = sender === 'user' ? 'user-message' : (sender === 'bot' ? 'bot-message' : 'system-message');
-    messageElement.innerText = message;
-    chatBox.appendChild(messageElement);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-// 이벤트 등록
-document.addEventListener('DOMContentLoaded', function () {
-    const jobTitleForm = document.getElementById('jobTitleForm');
-    const fileForm = document.getElementById('fileForm');
-
-    jobTitleForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const jobTitleInput = document.getElementById('jobTitleInput');
-        const jobTitle = jobTitleInput.value.trim();
-        if (jobTitle) {
-            addMessageToChatBox('user', jobTitle);
-            setJobTitle(jobTitle);
-            jobTitleInput.value = '';
-        }
-    });
-
-    fileForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const fileInput = document.getElementById('fileInput');
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            addMessageToChatBox('user', '파일 업로드: ' + file.name);
-            uploadFileAndRequestFeedback(file);
-            fileInput.value = '';
-        }
+        console.error('직무 설정 실패:', error);
+        alert('직무 설정 실패');
     });
 });
+
+// 파일 업로드 폼 제출
+document.getElementById("fileForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    
+    const fileInput = document.getElementById("fileInput");
+    const file = fileInput.files[0];
+    const jobTitle = document.getElementById("jobTitleInput").value || "일반";
+
+    if (!file) {
+        alert("업로드할 파일을 선택하세요.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('jobTitle', jobTitle);
+
+	fetch('/feedback/upload', {
+	  method: 'POST',
+	  body: formData
+	})
+	.then(response => response.json())
+	.then(data => {
+	  console.log("업로드 결과:", data); // 콘솔 찍기
+	  if (!data.feedback || !data.feedbackNum) {
+	    alert("서버에서 피드백을 제대로 받지 못했습니다.");
+	    return;
+	  }
+
+	  // 저장
+	  sessionStorage.setItem("lastFeedbackNum", data.feedbackNum);
+	  addMessageToChatBox("bot", data.feedback);
+	})
+	.catch(err => {
+	  console.error("Error:", err);
+	  alert("파일 업로드 실패");
+	});
+
+});
+
+// 질문 전송 버튼 클릭
+document.getElementById("sendQuestionButton").addEventListener("click", function (event) {
+    event.preventDefault();
+    
+	const feedbackNum = sessionStorage.getItem("lastFeedbackNum");
+	
+    const questionInput = document.getElementById("questionInput");
+    const question = questionInput.value.trim();
+
+    if (!question) {
+        alert("질문을 입력하세요!");
+        return;
+    }
+
+    if (!feedbackNum) {
+        alert("먼저 파일을 업로드하고 피드백을 받아야 합니다.");
+        return;
+    }
+
+    addMessageToChatBox("user", question);
+
+    fetch('/feedback/feedback/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+            feedbackNum: feedbackNum,
+            question: question
+        })
+    })
+    .then(response => response.text())
+    .then(answer => {
+        addMessageToChatBox("bot", answer);
+        questionInput.value = ""; // 질문 입력창 초기화
+    })
+    .catch(error => {
+        console.error('질문 전송 실패:', error);
+        alert('질문 전송 실패');
+    });
+});
+
+// 채팅박스에 메시지 추가하는 함수
+function addMessageToChatBox(sender, message) {
+    const chatBox = document.getElementById("chatBox");
+
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("message");
+
+    const textDiv = document.createElement("div");
+    textDiv.classList.add("message-text");
+
+    if (sender === "user") {
+        messageDiv.classList.add("user-message");
+    } else if (sender === "bot") {
+        messageDiv.classList.add("bot-message");
+    } else if (sender === "system") {
+        messageDiv.classList.add("system-message");
+    }
+
+    textDiv.textContent = message;
+    messageDiv.appendChild(textDiv);
+
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight; // 항상 맨 아래로 스크롤
+}

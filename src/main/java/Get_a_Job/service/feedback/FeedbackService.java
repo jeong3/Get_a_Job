@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import Get_a_Job.domain.FeedbackDTO;
+import Get_a_Job.domain.FeedbackQuestionDTO;
 import Get_a_Job.mapper.FeedbackMapper;
 
 /**
@@ -34,12 +37,12 @@ public class FeedbackService {
     @Autowired
     private FeedbackMapper feedbackMapper;
 
-
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
 
-    public FeedbackDTO processFileAndGetFeedback(MultipartFile file) {
+    // 파일 저장 + GPT 요청 + DB 저장
+    public Map<String, String> processFileAndGetFeedback(MultipartFile file, String jobTitle) {
         try {
             // 파일 저장
             String savedFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
@@ -47,14 +50,14 @@ public class FeedbackService {
             Files.createDirectories(filePath.getParent());
             Files.write(filePath, file.getBytes());
 
-            // 파일 텍스트 읽기
+            // 파일 텍스트 추출
             String extractedText = extractTextFromDocx(filePath.toFile());
 
-            // ChatGPT API 호출
-            String prompt = "사용자의 희망 직무는 \"" + jobTitle + "\" 입니다.\n아래 이력서/자소서에 대해 구체적인 피드백을 작성해주세요:\n\n" + extractedText;
+            // GPT 피드백 요청
+            String prompt = "사용자의 희망 직무는 \"" + jobTitle + "\" 입니다.\n아래 이력서/자소서에 대해 피드백을 제공해주세요:\n\n" + extractedText;
             String gptFeedback = chatGPTService.getGPTFeedback(prompt);
 
-            // DB 저장
+            // DTO 생성 및 저장
             FeedbackDTO dto = new FeedbackDTO();
             dto.setUserId("test_user");
             dto.setOriginalFileName(file.getOriginalFilename());
@@ -63,27 +66,46 @@ public class FeedbackService {
             dto.setGptFeedback(gptFeedback);
             dto.setJobTitle(jobTitle);
 
-            feedbackMapper.insertFeedback(dto);
+            feedbackMapper.insertFeedback(dto); // 여기에 selectKey로 피드백 번호가 생성됨
 
-            return dto;
+            // 결과 Map에 포함해서 리턴
+            Map<String, String> result = new HashMap<>();
+            result.put("feedback", gptFeedback);
+            result.put("feedbackNum", dto.getFeedbackNum()); // ★ 여기 추가
+            return result;
+
         } catch (IOException e) {
-            throw new RuntimeException("파일 업로드 및 처리 실패", e);
+            throw new RuntimeException("파일 업로드 실패", e);
         }
     }
 
-    public String extractTextFromDocx(File file) {
+
+
+    private String extractTextFromDocx(File file) {
         try (FileInputStream fis = new FileInputStream(file);
              XWPFDocument document = new XWPFDocument(fis)) {
-             
+
             StringBuilder textBuilder = new StringBuilder();
             document.getParagraphs().forEach(p -> textBuilder.append(p.getText()).append("\n"));
-            // 표가 있어도 무시 (표 추출 안 함)
 
             return textBuilder.toString();
         } catch (Exception e) {
-            // 파일이 손상됐거나 파싱 실패해도 서버 죽지 않게 함
             e.printStackTrace();
             return "파일을 읽는 데 실패했습니다.";
         }
+    }
+
+    // 기존 피드백에 대해 추가 질문하고 저장
+    public String askQuestionAboutFeedback(String feedbackNum, String question) {
+        String gptAnswer = chatGPTService.getGPTFeedback(question);
+
+        FeedbackQuestionDTO questionDTO = new FeedbackQuestionDTO();
+        questionDTO.setFeedbackNum(feedbackNum);
+        questionDTO.setQuestion(question);
+        questionDTO.setAnswer(gptAnswer);
+
+        feedbackMapper.insertFeedbackQuestion(questionDTO);
+
+        return gptAnswer;
     }
 }

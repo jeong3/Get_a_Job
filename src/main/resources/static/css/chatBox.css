@@ -134,3 +134,15 @@ body {
     font-style: italic;
     color: #555;
 }
+
+#chatBox {
+  width: 80%;
+  height: 500px; /* 고정 높이 줘야 박스가 보인다 */
+  background-color: #ffffff; /* 흰색 배경 */
+  border: 1px solid #ccc; /* 얇은 회색 테두리 */
+  border-radius: 8px; /* 살짝 둥글게 */
+  overflow-y: auto; /* 세로 스크롤 */
+  margin: 20px auto; /* 중앙 정렬 */
+  padding: 15px; /* 안쪽 여백 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 약간 그림자 */
+}

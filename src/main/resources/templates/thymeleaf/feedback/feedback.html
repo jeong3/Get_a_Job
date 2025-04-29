@@ -6,7 +6,13 @@
     <link rel="stylesheet" href="/static/css/chatBox.css">
 </head>
 <body>
-    <div id="chatBox" style="height:400px; overflow-y:scroll; border:1px solid #ccc; margin-bottom:10px; padding:10px;"></div>
+    <div>
+        <a href="/">홈으로</a>
+    </div>
+
+    <div id="chatBox">
+        <!-- 채팅 메시지들 출력하는 곳 -->
+    </div>
 
     <!-- 희망 직무 입력 폼 -->
     <form id="jobTitleForm" style="margin-bottom: 10px;">
@@ -15,10 +21,16 @@
     </form>
 
     <!-- 파일 업로드 폼 -->
-    <form id="fileForm" enctype="multipart/form-data">
+    <form id="fileForm" enctype="multipart/form-data" style="margin-bottom: 10px;">
         <input type="file" id="fileInput" accept=".docx" required />
         <button type="submit">파일 업로드</button>
     </form>
+
+    <!-- 🆕 질문 입력창과 보내기 버튼 추가 -->
+    <div id="questionInputArea" style="display: flex; margin-top: 10px;">
+        <input type="text" id="questionInput" placeholder="추가 질문을 입력하세요" style="flex-grow: 1; padding: 10px; border-radius: 20px; border: 1px solid #ddd;">
+        <button id="sendQuestionButton" style="margin-left: 10px; padding: 10px 20px; border-radius: 20px; background-color: #4CAF50; color: white; border: none;">질문 보내기</button>
+    </div>
 
     <script src="/static/js/feedBackChatBox.js"></script>
 </body>
