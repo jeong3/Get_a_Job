@@ -186,7 +186,9 @@
         
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/emp/empList">empList</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">Support</a>
-        <a class="py-2 link-body-emphasis text-decoration-none" href="#">Pricing</a>
+        
+        <a class="py-2 link-body-emphasis text-decoration-none" th:if="${session.auth == null}" href="/login/login">로그인</a>
+        <a class="py-2 link-body-emphasis text-decoration-none" th:if="${session.auth != null}" href="/login/login">로그아웃</a>
       </nav>
     </div>
 
