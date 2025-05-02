@@ -23,8 +23,11 @@ public class SaveQAServie {
 		System.out.println("interviewNum"+interviewNum);
 		interviewCommand.setInterviewNum(interviewNum);
 		InterviewDTO interviewDTO = new InterviewDTO();
-		System.out.println("dto"+interviewDTO);
+		
+		if(interviewCommand.getUserAnswer() == null) interviewCommand.setUserAnswer("");
 		BeanUtils.copyProperties(interviewCommand, interviewDTO);
+		
+		
 		interviewMapper.InterviewInsert(interviewDTO);
 	}
 
