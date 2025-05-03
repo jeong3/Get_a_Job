@@ -1,8 +1,10 @@
 package Get_a_Job.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.type.Alias;
+import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+
+import Get_a_Job.domain.ChatRoomDTO;
 import Get_a_Job.domain.InterviewDTO;
 
 @Mapper
@@ -13,5 +15,9 @@ public interface InterviewMapper {
 	int InterviewInsert(InterviewDTO interviewDTO);
 
 	int ChatRoomUpdate(String chatNum, String gptFeedback);
+
+	List<ChatRoomDTO> ChatListSelectAll(String userId);
+
+	ChatRoomDTO ChatDetail(String chatNum);
 
 }
