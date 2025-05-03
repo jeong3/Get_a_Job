@@ -6,21 +6,28 @@
     <link rel="stylesheet" href="/static/css/chatRoom.css">
 </head>
 <body>
+
     <div class="chat-container">
+    
         <div class="chat-header">
-            <h3>이전 모의 면접 기록 [[${dto.chatNum}]]</h3>
+            <h3>이전 모의 면접 기록 ([[${dto.chatNum}]])</h3>
         </div>
         <div class="chat-box" id="chat-box">
             <!-- DB에서 불러온 채팅 메시지 출력 -->
-            <div th:each="dto : ${dto}">
+            <div th:each="dto : ${dto}"  class="message">
+          
+            <span class="feedback" th:text="${dto.interviewDate}">날짜</span>
             
                 <div th:each="interview : ${dto.interviewDTO}" class="message">
                     <!-- 질문은 봇 메시지로 스타일링 -->
                     <span class="message-text bot-message" th:text="${interview.question}">질문</span>
                     
                     <!-- 답변은 유저 메시지로 스타일링 -->
-                    <span class="message-text user-message" th:text="${interview.userAnswer}">답변</span> <br>
+                    <span class="message-text user-message" th:if="${interview.userAnswer != '모의면접 내용을 보고 전체적인 피드백해줘'}" th:text="${interview.userAnswer}">답변</span> <br>
+                    <span class="feedback" th:if="${interview.userAnswer == '모의면접 내용을 보고 전체적인 피드백해줘'}" th:text="--------------------------------------피드백--------------------------------------">답변</span>
                 </div>
+                
+                <span class="feedback" th:if="${dto.gptFeedback != null}" th:text="${dto.gptFeedback}">피드백</span>
             </div>
         </div>
         <!-- 과거 채팅에는 입력창과 버튼 제거 -->

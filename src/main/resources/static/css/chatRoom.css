@@ -46,6 +46,21 @@ body {
     flex-direction: column;
     gap: 20px;  /* 간격을 15px로 늘림 */
 }
+.feedback {
+    width: 100%;
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 10px;
+    border-radius: 12px;
+    margin: 20px 0 10px 0;
+    line-height: 1.6;
+    font-size: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    word-break: break-word;
+    box-sizing: border-box;
+    text-align: center;
+}
+
 
 .message-text {
     padding: 10px;
