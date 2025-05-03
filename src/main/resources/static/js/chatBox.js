@@ -58,7 +58,7 @@ document.getElementById('send-btn').addEventListener('click', function() {
         messageInput.value = '';
 
         // GPT로 메시지 전송
-        sendToGPT(messageText);
+        sendToGPT(messageText,0);
     }
 });
 document.getElementById('message-input').addEventListener('keydown', function(event) {
@@ -68,8 +68,18 @@ document.getElementById('message-input').addEventListener('keydown', function(ev
     }
 });
 
+// 보내기 버튼을 클릭했을 때 실행되는 함수
+document.getElementById('feedback').addEventListener('click', function() {
+	document.getElementById('feedback').addEventListener('click', function () {
+	    const feedbackPrompt = "모의면접 내용을 보고 전체적인 피드백해줘";
 
-async function sendToGPT(userInput) {
+	    addMessage(feedbackPrompt, 'user'); // 사용자가 이런 요청을 했다는 걸 UI에 보여줌
+	    sendToGPT(feedbackPrompt,1);          // GPT에게 전송
+		
+	});
+});
+
+async function sendToGPT(userInput,isFeedback) {
     const messages = [
         {
             role: "system",
@@ -103,6 +113,24 @@ async function sendToGPT(userInput) {
 
         const data = await response.json();
         const gptResponse = data.choices[0].message.content;
+		
+		if(isFeedback == 1){
+			$.ajax({
+			       url: "/interview/saveFeedback",  // 서버로 데이터 전송
+			       method: "POST",  // POST 메서드
+			       data: {
+			           chatNum: chatNum,      // 채팅방 번호
+			           question: gptResponse    // 피드백내용
+			       },
+			       success: function() {
+			           console.log("피드백이 저장되었습니다.");
+			       },
+			       error: function(xhr, status, error) {
+			           console.error("저장 중 오류 발생:", error);
+			           alert("저장 실패");
+			       }
+			   });
+		}
 
         // ✅ 지금 사용자 입력은 지난 GPT 질문에 대한 답변이므로 그걸 저장
         if (lastQuestion !== "") {

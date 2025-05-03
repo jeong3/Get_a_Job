@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import Get_a_Job.command.InterviewCommand;
 import Get_a_Job.service.interview.ChatRoomCreateService;
+import Get_a_Job.service.interview.SaveFeedbackService;
 import Get_a_Job.service.interview.SaveQAServie;
 import jakarta.servlet.http.HttpSession;
 @RequestMapping("interview")
@@ -17,6 +18,8 @@ public class InterviewRestController {
 	ChatRoomCreateService chatRoomCreateService;
 	@Autowired
 	SaveQAServie saveQAService;
+	@Autowired
+	SaveFeedbackService saveFeedbackService;
 	
 	@RequestMapping("chatRoomCreate")
 	public String chatRoomCreate(@RequestParam String jobTitle, HttpSession session, Model model) {
@@ -31,6 +34,12 @@ public class InterviewRestController {
 	public int saveQA(InterviewCommand interviewCommand) {
 		System.out.println("커맨드"+interviewCommand);
 		saveQAService.execute(interviewCommand);
+		return 1;
+	}
+	
+	@RequestMapping("saveFeedback")
+	public int saveFeedback(InterviewCommand interviewCommand) {
+		saveFeedbackService.execute(interviewCommand);
 		return 1;
 	}
 }

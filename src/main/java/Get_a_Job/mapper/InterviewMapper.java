@@ -12,4 +12,6 @@ public interface InterviewMapper {
 
 	int InterviewInsert(InterviewDTO interviewDTO);
 
+	int ChatRoomUpdate(String chatNum, String gptFeedback);
+
 }

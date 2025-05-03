@@ -14,5 +14,12 @@
 	values (#{interviewNum}, #{question}, #{userAnswer}, #{chatNum})
 </insert>
 
+<update id="ChatRoomUpdate">
+	update chat_room
+	set
+	gpt_feedback = #{gptFeedback}
+	where chat_num = #{chatNum}
+</update>
+
 </mapper>
 	
