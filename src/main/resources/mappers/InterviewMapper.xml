@@ -21,5 +21,37 @@
 	where chat_num = #{chatNum}
 </update>
 
+<resultMap type="chatRoomDTO" id="ChatRoomResultMap">
+	<id property="chatNum" column="chat_num" />
+	<result property="gptFeedback" column="gpt_feedback"/>
+	<result property="interviewDate" column="interview_date"/>
+	<result property="jobTitle" column="job_title"/>
+	<result property="userId" column="user_id"/>
+	<collection property="interviewDTO" ofType="interviewDTO">
+		<id property="interviewNum" column="INTERVIEW_NUM" />
+		<result property="question" column="QUESTION"/>
+		<result property="userAnswer" column="USER_ANSWER"/>
+	</collection>
+</resultMap>
+	
+<select id="ChatListSelectAll" resultMap="ChatRoomResultMap">
+	select c.CHAT_NUM,INTERVIEW_NUM,QUESTION,USER_ANSWER
+	,GPT_FEEDBACK,INTERVIEW_DATE,JOB_TITLE,USER_ID
+	from interview i join chat_room c 
+	on i.chat_num = c.chat_num
+	where user_id = #{userId}
+	order by c.chat_num asc, INTERVIEW_NUM asc
+</select>
+
+<select id="ChatDetail" resultMap="ChatRoomResultMap">
+	select c.CHAT_NUM,INTERVIEW_NUM,QUESTION,USER_ANSWER
+	,GPT_FEEDBACK,INTERVIEW_DATE,JOB_TITLE,USER_ID
+	from interview i join chat_room c 
+	on i.chat_num = c.chat_num
+	where  c.chat_num = #{chatNum}
+	order by c.chat_num asc, INTERVIEW_NUM asc
+	
+</select>
+
 </mapper>
 	

@@ -36,7 +36,7 @@ function startChatWithJob(job_title) {
     const messages = [
         { 
             role: "system", 
-            content: `너는 ${job_title} 전문 모의면접관이야. 사용자의 답변에 따라 추가 질문을 해줘.` 
+            content: `너는 ${job_title} 전문 모의면접관이야. 사용자의 답변에 따라 추가 질문을 하나씩 해줘.` 
         },
         { 
             role: "user", 
