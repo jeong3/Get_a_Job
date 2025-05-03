@@ -16,5 +16,6 @@ public class FeedbackDTO {
     private String savedFileName;
     private String filePath;
     private String gptFeedback;
+    private String feedbackDate;
     private String jobTitle;
 }

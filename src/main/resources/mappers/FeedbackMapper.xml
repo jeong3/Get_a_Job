@@ -38,5 +38,23 @@
 	        SYSDATE
 	    )
 	</insert>
-		
+	
+	<select id="selectFeedbackHistory" parameterType="string" resultType="feedbackDTO">
+		SELECT feedback_num, original_filename, gpt_feedback, feedback_date, job_title FROM feedback
+	    WHERE user_id = #{userId}
+	    ORDER BY feedback_date DESC
+	</select>
+	
+	<select id="selectFeedbackDetail" parameterType="string" resultType="feedbackDTO">
+		SELECT feedback_num, original_filename, saved_filename, file_path, gpt_feedback, feedback_date, job_title 
+		FROM feedback
+	    WHERE feedback_num = #{feedbackNum}
+	</select>
+	
+	<select id="selectFeedBackQnA" parameterType="string" resultType="feedbackQuestionDTO">
+		select feedback_num, QUESTION_ID, FEEDBACK_NUM, QUESTION, ANSWER, CREATED_AT 
+		from feedback_question
+		where feedback_num = #{feedbackNum}
+		order by QUESTION_ID asc
+	</select>
 </mapper>
