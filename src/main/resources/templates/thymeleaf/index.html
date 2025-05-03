@@ -182,13 +182,21 @@
       </a>
 
       <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/memberList">memberList</a>
-        
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/emp/empList">empList</a>
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">Support</a>
-        
-        <a class="py-2 link-body-emphasis text-decoration-none" th:if="${session.auth == null}" href="/login/login">로그인</a>
-        <a class="py-2 link-body-emphasis text-decoration-none" th:if="${session.auth != null}" href="/login/login">로그아웃</a>
+      	<th:block th:if="${session.auth != null}">
+      	  <th:block th:if="${session.auth.grade == 'mem'}">
+      	    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/myPage/memMyPage">MyPage</a>
+      	  </th:block>
+          <th:block th:if="${session.auth.grade == 'emp'}">
+            <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/myPage/empMyPage">MyPage</a>
+            <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/memberList">memberList</a>
+        	<a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/emp/empList">empList</a>
+          </th:block>
+          <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/login/login">로그아웃</a>
+        </th:block>
+        <th:block th:if="${session.auth == null}">
+          <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/login/login">로그인</a>
+          <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/memberRegist">회원가입</a>
+        </th:block>
       </nav>
     </div>
 

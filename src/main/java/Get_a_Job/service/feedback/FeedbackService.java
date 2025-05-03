@@ -16,9 +16,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import Get_a_Job.domain.AuthInfoDTO;
 import Get_a_Job.domain.FeedbackDTO;
 import Get_a_Job.domain.FeedbackQuestionDTO;
 import Get_a_Job.mapper.FeedbackMapper;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * 파일 저장, 변환, GPT 호출 및 Oracle 저장 담당 Service
@@ -42,7 +44,7 @@ public class FeedbackService {
     }
 
     // 파일 저장 + GPT 요청 + DB 저장
-    public Map<String, String> processFileAndGetFeedback(MultipartFile file, String jobTitle) {
+    public Map<String, String> processFileAndGetFeedback(MultipartFile file, String jobTitle, HttpSession session) {
         try {
             // 파일 저장
             String savedFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
@@ -57,9 +59,13 @@ public class FeedbackService {
             String prompt = "사용자의 희망 직무는 \"" + jobTitle + "\" 입니다.\n아래 이력서/자소서에 대해 피드백을 제공해주세요:\n\n" + extractedText;
             String gptFeedback = chatGPTService.getGPTFeedback(prompt);
 
+            // Session으로 ID 호출
+            AuthInfoDTO auth = (AuthInfoDTO)session.getAttribute("auth");
+            String userId = auth.getUserId();
+            
             // DTO 생성 및 저장
             FeedbackDTO dto = new FeedbackDTO();
-            dto.setUserId("test_user");
+            dto.setUserId(userId);
             dto.setOriginalFileName(file.getOriginalFilename());
             dto.setSavedFileName(savedFileName);
             dto.setFilePath(filePath.toString());
