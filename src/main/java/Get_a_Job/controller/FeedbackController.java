@@ -41,7 +41,7 @@ public class FeedbackController {
     public ResponseEntity<Map<String, String>> uploadResume(@RequestParam("file") MultipartFile file,
                                                             @RequestParam("jobTitle") String jobTitle,
                                                             HttpSession session) {
-        Map<String, String> result = feedbackService.processFileAndGetFeedback(file, jobTitle);
+        Map<String, String> result = feedbackService.processFileAndGetFeedback(file, jobTitle, session);
 
         // 세션에 피드백 저장 (옵션)
         session.setAttribute("lastFeedback", result.get("feedback"));
