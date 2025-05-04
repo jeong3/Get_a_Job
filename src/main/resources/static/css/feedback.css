@@ -1,0 +1,119 @@
+/* 전체 페이지 기본 스타일 */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 상단 링크 */
+a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 채팅 박스 */
+#chatBox {
+    width: 90%;
+    max-width: 700px;
+    height: 400px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 15px;
+    overflow-y: auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* 폼 공통 */
+form {
+    width: 90%;
+    max-width: 700px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* 인풋 기본 스타일 */
+input[type="text"],
+input[type="file"] {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* 버튼 공통 스타일 */
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* 질문 입력 영역 */
+#questionInputArea {
+    width: 90%;
+    max-width: 700px;
+    display: flex;
+    align-items: center;
+}
+/* 공통 메시지 박스 스타일 */
+.message {
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    word-break: break-word;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 15px;
+    line-height: 1.5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 사용자 메시지 (오른쪽 정렬, 초록 계열) */
+.user-message {
+    align-self: flex-end;
+    background-color: #e1f7e7;
+    color: #1c4532;
+    border: 1px solid #a3d9a5;
+}
+
+/* GPT 메시지 (왼쪽 정렬, 회색 계열) */
+.bot-message {
+    align-self: flex-start;
+    background-color: #f4f4f4;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+/* 시스템 메시지 (가운데 정렬, 회색배경 + 이탤릭) */
+.system-message {
+    align-self: center;
+    background-color: #eee;
+    color: #666;
+    font-style: italic;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px dashed #bbb;
+}
